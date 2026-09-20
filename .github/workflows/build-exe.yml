@@ -35,7 +35,12 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
           Copy-Item build\Release\ReelForge.exe dist\
-          & "$env:Qt6_DIR\..\..\bin\windeployqt.exe" dist\ReelForge.exe --release --no-translations
+          $windeployqt = Get-Command windeployqt.exe -ErrorAction SilentlyContinue
+          if ($null -eq $windeployqt) {
+            $windeployqt = Get-ChildItem -Path "D:\a\Qt", "C:\Qt" -Filter windeployqt.exe -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 1
+          }
+          if ($null -eq $windeployqt) { throw "windeployqt.exe was not found" }
+          & $windeployqt.Source dist\ReelForge.exe --release --no-translations
 
       - name: Package
         shell: pwsh
