@@ -3,6 +3,8 @@ name: Build ReelForge.exe (C++)
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     tags:
       - "v*"
 
