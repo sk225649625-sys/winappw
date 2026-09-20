@@ -47,6 +47,9 @@ public:
     static bool boolean(const QJsonObject& o, const QString& key, bool def = false) {
         return boolean(o.value(key), def);
     }
+    static bool boolean(const QJsonObject& o, const char* key, bool def = false) {
+        return boolean(o, QString::fromUtf8(key), def);
+    }
     static QJsonArray arr(const QJsonObject& o, const QString& key) {
         auto v = o.value(key);
         return v.isArray() ? v.toArray() : QJsonArray();

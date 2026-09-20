@@ -287,7 +287,8 @@ void MainWindow::onClipPropsChanged() {
 void MainWindow::onMoveUp() {
     if (m_selectedClip <= 0) return;
     QJsonArray clips = J::arr(m_project, "clips");
-    clips.swapItemsAt(m_selectedClip, m_selectedClip - 1);
+    QJsonValue clip = clips.takeAt(m_selectedClip);
+    clips.insert(m_selectedClip - 1, clip);
     m_project["clips"] = clips;
     m_selectedClip--;
     refreshTimelineList();
@@ -297,7 +298,8 @@ void MainWindow::onMoveUp() {
 void MainWindow::onMoveDown() {
     QJsonArray clips = J::arr(m_project, "clips");
     if (m_selectedClip < 0 || m_selectedClip >= clips.size() - 1) return;
-    clips.swapItemsAt(m_selectedClip, m_selectedClip + 1);
+    QJsonValue clip = clips.takeAt(m_selectedClip);
+    clips.insert(m_selectedClip + 1, clip);
     m_project["clips"] = clips;
     m_selectedClip++;
     refreshTimelineList();
